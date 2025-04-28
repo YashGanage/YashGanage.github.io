@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CRUD App</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- <link rel="stylesheet" href="main.css" /> -->
+  <style>
+    :root {
+      --primary: #a40000;
+      --secondary: #3f37c9;
+      --success: #0000ff;
+      --danger: #f72585;
+      --warning: #f8961e;
+      --info: #fbff00;
+      --light: #f8f9fa;
+      --dark: #212529;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0d00ff;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .app-header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 2rem 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+      border-radius: 0 0 10px 10px;
+    }
+    
+    .app-title {
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+    
+    .app-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      /* background-color: #000000; */
+    }
+    
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+      overflow: hidden;
+      /* background-color: rgb(47, 26, 183); */
+    
+      
+      
+    }
+    
+    .card-header {
+      background-color: white;
+      border-bottom: 2px solid #f0f0f7;
+      padding: 1.25rem;
+      font-weight: 500;
+      font-size: 1.1rem;
+    }
+    
+    .card-body {
+      padding: 1.5rem;
+
+    }
+    
+    .form-control {
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      transition: all 0.2s ease;
+    }
+    
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+    }
+    
+    label {
+      font-weight: 500;
+      color: #4a4f59;
+      margin-bottom: 0.5rem;
+    }
+    
+    .btn {
+      border-radius: 8px;
+      padding: 0.6rem 1.2rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--secondary);
+      border-color: var(--secondary);
+    }
+    
+    .btn-danger {
+      background-color: var(--danger);
+      border-color: var(--danger);
+    }
+    
+    .btn-info {
+      background-color: var(--info);
+      border-color: var(--info);
+    }
+    
+    .btn-success {
+      background-color: var(--success);
+      border-color: var(--success);
+    }
+    
+    .btn-secondary {
+      background-color: #a0aec0;
+      border-color: #a0aec0;
+    }
+    
+    .table {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,0,0,0.05);
+    }
+    
+    .table thead th {
+      background-color: var(--primary);
+      color: white;
+      font-weight: 500;
+      border: none;
+      padding: 1rem;
+    }
+    
+    .table tbody tr:nth-child(even) {
+      background-color: #f8faff;
+    }
+    
+    .table td {
+      padding: 1rem;
+      vertical-align: middle;
+    }
+    
+    .search-box {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+    
+    .search-box .input-group {
+      border-radius: 50px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+    
+    .search-box input {
+      border-radius: 50px 0 0 50px;
+      border: none;
+      padding-left: 1.5rem;
+    }
+    
+    .search-box .btn {
+      border-radius: 0 50px 50px 0;
+    }
+    
+    .action-button {
+      border-radius: 6px;
+      margin-right: 5px;
+      width: 35px;
+      height: 35px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      transition: all 0.2s;
+    }
+    
+    .action-button:hover {
+      transform: translateY(-2px);
+    }
+    
+    .stats-container {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    
+    .stat-card {
+      background: rgba(246, 8, 8, 0.501);
+      border-radius: 10px;
+      padding: 1rem;
+      flex: 1;
+      margin: 0 0.5rem;
+      box-shadow: 0 3px 10px rgb(255, 255, 255);
+      text-align: center;
+    }
+    
+    .stat-card:first-child {
+      margin-left: 0;
+    }
+    
+    .stat-card:last-child {
+      margin-right: 0;
+    }
+    
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .stat-label {
+      color: #020202;
+      font-size: 0.9rem;
+    }
+    
+    .price-display {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .color-preview {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      display: inline-block;
+      border: 2px solid #e2e8f0;
+    }
+    
+    .url-link {
+      color: var(--primary);
+      text-decoration: none;
+      display: inline-block;
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    @media (max-width: 768px) {
+      .card-body {
+        padding: 1rem;
+      }
+      
+      .table thead {
+        display: none;
+      }
+      
+      .table, .table tbody, .table tr, .table td {
+        display: block;
+        width: 100%;
+      }
+      
+      .table tr {
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #e2e8f0;
+      }
+      
+      .table td {
+        text-align: right;
+        padding: 0.5rem 1rem;
+        position: relative;
+      }
+      
+      .table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        font-weight: 500;
+      }
+      
+      .stats-container {
+        flex-direction: column;
+      }
+      
+      .stat-card {
+        margin: 0.5rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-container">
+      <h1 class="app-title text-center">Inventory Management System</h1>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <div class="row">
+      <!-- Left Column: Form -->
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header">
+            Add or Update Product
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="id">Product ID</label>
+              <input id="id" class="form-control" type="text">
+            </div>
+            <div class="form-group">
+              <label for="name">Product Name</label>
+              <input id="name" class="form-control" type="text" placeholder="Enter Product Name">
+            </div>
+            <div class="form-group">
+              <label for="price">Price (INR 100-INR 5000)</label>
+              <div class="price-display">
+                <input id="price" class="form-control-range" type="range" min="100" max="1000" oninput="amount.value=price.value">
+                <output id="amount" class="badge badge-primary p-2">0</output>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="desc">Description</label>
+              <textarea id="desc" class="form-control" rows="3" placeholder="Enter Description"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="color">Color</label>
+              <input id="color" class="form-control" type="color">
+            </div>
+            <div class="form-group">
+              <label for="url">Product URL</label>
+              <input id="url" class="form-control" type="url" placeholder="https://example.com">
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <button id="add" class="btn btn-primary">
+                <i class="fas fa-plus mr-1"></i> Add
+              </button>
+              <button id="update" class="btn btn-info">
+                <i class="fas fa-edit mr-1"></i> Update
+              </button>
+              <button id="delete" class="btn btn-danger">
+                <i class="fas fa-trash mr-1"></i> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Search and Table -->
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-header">
+            Search Products
+          </div>
+          <div class="card-body">
+            <div class="input-group">
+              <input type="text" class="form-control" id="searchBox" placeholder="Search by product name...">
+              <div class="input-group-append">
+                <button class="btn btn-success" id="searchBtn">
+                  <i class="fas fa-search mr-1"></i> Search
+                </button>
+                <button class="btn btn-secondary" id="clearSearchBtn">
+                  <i class="fas fa-times mr-1"></i> Clear
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-container">
+          <div class="stat-card">
+            <div class="stat-number" id="total-count">0</div>
+            <div class="stat-label">Total Products</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="marked-count">0</div>
+            <div class="stat-label">Marked</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="unmarked-count">0</div>
+            <div class="stat-label">Unmarked</div>
+          </div>
+        </div>
+        
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Color</th>
+                <th>URL</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script to update the stat cards based on the original span values
+    function updateStatCards() {
+      const totalSpan = document.getElementById('total');
+      const markedSpan = document.getElementById('marked');
+      const unmarkedSpan = document.getElementById('unmarked');
+      
+      if (totalSpan) {
+        document.getElementById('total-count').textContent = totalSpan.textContent.replace('Total ', '');
+      }
+      if (markedSpan) {
+        document.getElementById('marked-count').textContent = markedSpan.textContent.replace('Marked ', '');
+      }
+      if (unmarkedSpan) {
+        document.getElementById('unmarked-count').textContent = unmarkedSpan.textContent.replace('Unmarked ', '');
+      }
+    }
+    
+    // Call this function when the DOM is loaded and whenever the original spans are updated
+    document.addEventListener('DOMContentLoaded', function() {
+      // Create hidden spans for compatibility with original JS
+      const statsContainer = document.createElement('div');
+      statsContainer.style.display = 'none';
+      statsContainer.innerHTML = '<span id="total"></span> <span id="marked"></span> <span id="unmarked"></span>';
+      document.body.appendChild(statsContainer);
+      
+      // Set up a MutationObserver to watch for changes in the hidden spans
+      const observer = new MutationObserver(updateStatCards);
+      observer.observe(statsContainer, { childList: true, subtree: true, characterData: true });
+    });
+  </script>
+
+  <script src="js/items.js"></script>
+  <script src="js/itemOperations.js"></script>
+  <script src="js/controller.js"></script>
+</body>
+</html>
